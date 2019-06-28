@@ -1,36 +1,52 @@
 import React from 'react';
-import { Button, Icon } from 'antd';
+import {Table, Button, Icon } from 'antd';
 
-const TableHeader = () => {
-    return (
-      <thead>
-        <tr>
-        <th>id</th>
-        <th>Name</th>
-        <th>DOB</th>
-        <th>Gender</th>
-        <th>Actions</th>
-        </tr>
-      </thead>
-    )
-  }
   const TableBody = props => {
-    const rows = props.users.map((row, index) => {
-      return (
-        <tr key={index}>
-            <td>{index}</td>
-            <td>{row.name}</td>
-            <td>{row.dob}</td>
-            <td>{row.gender}</td>
-            <td>
+    const columns = [
+      {
+          title: 'ID',
+          dataIndex: 'id',
+          key: 'id',
+      },
+      {
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+      },
+      {
+          title: 'Date',
+          dataIndex: 'dob',
+          key: 'dob',
+      },
+      {
+          title: 'Gender',
+          dataIndex: 'gender',
+          key: 'gender',
+      },
+      {
+          title: 'Actions',
+          dataIndex: 'Actions',
+          key: 'Actions',
+      },
+  ];
+  const data = [];
+  props.users.map((row, index) => {
+    data.push(
+        {
+            Actions: <div>
               <a href="#" onClick={() => props.updateUser(index)}><Icon type="edit" style={{ color: 'blue' }} /></a>
               <a href="#" onClick={() => props.delUser(index)}><Icon type="delete" style={{ color: 'red' }} /></a>
               <a href="#" onClick={() => props.displayGrowth(index)}><Icon type="eye" style={{ color: 'green' }} /></a>
-            </td>
-        </tr>
-      )
-    })
-    return <tbody>{rows}</tbody>
+              </div>,
+            key: "'"+index+"'",
+            id: index, 
+            name: row.name,
+            dob: row.dob,
+            gender: row.gender,
+        }
+    )
+  });
+  return <Table dataSource={data} columns={columns} />;
   }
 class Users extends React.Component {
     constructor(props){
@@ -41,7 +57,6 @@ class Users extends React.Component {
         return (
             <div className="container table-responsive-lg">
                 <table className="table"> 
-                    <TableHeader />
                     <TableBody users={users} updateUser={this.props.updateUser}  delUser={this.props.delUser} displayGrowth={this.props.displayGrowth}/>
                 </table>
             </div>
